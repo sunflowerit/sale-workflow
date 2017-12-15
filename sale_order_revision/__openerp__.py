@@ -21,7 +21,7 @@
 
 {
     'name': "Sale order revisions",
-    'version': '8.0.0.1.0',
+    'version': '0.1',
     'category': 'Sale Management',
     'author': 'Agile Business Group,'
               'Camptocamp,'
@@ -29,7 +29,7 @@
               'Odoo Community Association (OCA)',
     'website': 'http://www.agilebg.com',
     'license': 'AGPL-3',
-    "depends": ['sale'],
+    "depends": ['sale', 'sale_stock'],
     "data": [
         'view/sale_order.xml',
         ],

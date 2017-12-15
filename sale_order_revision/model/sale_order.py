@@ -23,6 +23,7 @@
 
 from openerp import fields, models, api
 from openerp.tools.translate import _
+import re
 
 
 class sale_order(models.Model):
@@ -54,6 +55,11 @@ class sale_order(models.Model):
     @api.multi
     def copy_quotation(self):
         self.ensure_one()
+
+        # store existing procurement group id, unset it on new revision
+        procurement_group_id = self.procurement_group_id.id
+        self.write({'procurement_group_id': None})
+
         revision_self = self.with_context(new_sale_revision=True)
         action = super(sale_order, revision_self).copy_quotation()
         old_revision = self.browse(action['res_id'])
@@ -61,36 +67,52 @@ class sale_order(models.Model):
         self.delete_workflow()
         self.create_workflow()
         self.write({'state': 'draft'})
-        self.order_line.write({'state': 'draft'})
-        # remove old procurements
-        self.mapped('order_line.procurement_ids').write(
-            {'sale_line_id': False})
         msg = _('New revision created: %s') % self.name
         self.message_post(body=msg)
         old_revision.message_post(body=msg)
+
+        # set stored procurement group id on old order
+        old_revision.write({'procurement_group_id': procurement_group_id})
+
+        # swap order lines of old and new order
+        so_line = self.env['sale.order.line']
+        old_lines = so_line.browse(old_revision.order_line.ids)
+        new_lines = so_line.browse(self.order_line.ids)
+        old_lines.write({'order_id': self.id})
+        new_lines.write({'order_id': old_revision.id})
+
         return action
 
     @api.returns('self', lambda value: value.id)
     @api.multi
-    def copy(self, default=None):
-        if default is None:
-            default = {}
+    def copy(self, defaults=None):
+        if not defaults:
+            defaults = {}
         if self.env.context.get('new_sale_revision'):
             prev_name = self.name
             revno = self.revision_number
-            self.write({'revision_number': revno + 1,
-                        'name': '%s-%02d' % (self.unrevisioned_name,
-                                             revno + 1)
+            if not re.search('-[0-9][0-9]$', prev_name):
+                new_revno = 1
+                prev_revno = 0
+                new_unrevisioned_name = prev_name
+            else:
+                prev_revno = revno
+                new_revno = revno + 1
+                new_unrevisioned_name = self.unrevisioned_name
+            new_name = '%s-%02d' % (new_unrevisioned_name, new_revno)
+
+            self.write({'revision_number': new_revno,
+                        'unrevisioned_name': new_unrevisioned_name,
+                        'name': new_name,
                         })
-            default.update({
-                'name': prev_name,
-                'revision_number': revno,
-                'active': False,
-                'state': 'cancel',
-                'current_revision_id': self.id,
-                'unrevisioned_name': self.unrevisioned_name,
-            })
-        return super(sale_order, self).copy(default=default)
+            defaults.update({'name': prev_name,
+                             'revision_number': prev_revno,
+                             'unrevisioned_name': new_unrevisioned_name,
+                             'active': False,
+                             'state': 'cancel',
+                             'current_revision_id': self.id,
+                             })
+        return super(sale_order, self).copy(defaults)
 
     @api.model
     def create(self, values):
