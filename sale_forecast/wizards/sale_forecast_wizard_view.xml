@@ -54,7 +54,7 @@
         <field name="name">sale.forecast.wizard.form</field>
         <field name="model">sale.forecast.wizard</field>
         <field name="arch" type="xml">
-            <form string="Stock Demand Estimate Wizard">
+            <form string="Sale Forecast Wizard">
                 <sheet>
                     <group name="dates">
                         <label for="date_start" string="Period" />
@@ -89,7 +89,7 @@
         </field>
     </record>
     <record id="sale_forecast_wizard_action" model="ir.actions.act_window">
-            <field name="name">Create Sale Forecast</field>
+            <field name="name">Create Sale Forecasts</field>
             <field name="res_model">sale.forecast.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
@@ -97,8 +97,7 @@
         </record>
     <menuitem
         id="sale_forecast_wizard_menu"
-        parent="sale_forecast.sale_forecast_menu"
+        parent="sale_forecast.sale_forecast_planning_menu"
         action="sale_forecast_wizard_action"
-        sequence="3"
     />
 </odoo>

@@ -50,7 +50,7 @@
         <field name="name">sale.forecast.pivot</field>
         <field name="model">sale.forecast</field>
         <field name="arch" type="xml">
-            <pivot string="Sale Forecast">
+            <pivot string="Stock Demand Estimate">
                 <field name="product_qty" type="measure" />
                 <field name="product_id" type="row" />
                 <field name="date_range_id" type="col" />
@@ -123,16 +123,14 @@
         <field name="context">{"search_default_not_expired": 1}</field>
     </record>
     <menuitem
-        id="sale_forecast_menu"
+        id="sale_forecast_planning_menu"
         name="Forecast"
         parent="sale.sale_menu_root"
         sequence="10"
     />
     <menuitem
-        id="sale_forecast_record_menu"
-        name="Forecast records"
-        parent="sale_forecast_menu"
+        id="sale_forecast_menu"
+        parent="sale_forecast_planning_menu"
         action="sale_forecast_action"
-        sequence="1"
     />
 </odoo>
