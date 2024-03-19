@@ -50,7 +50,7 @@ class SaleForecast(models.Model):
         default=lambda self: self.env.company,
     )
     date_range_id = fields.Many2one(
-        comodel_name="date.range", string="Estimating Period", ondelete="restrict"
+        comodel_name="date.range", string="Forecasting Period", ondelete="restrict"
     )
 
     @api.depends(
