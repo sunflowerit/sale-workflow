@@ -27,6 +27,7 @@ class SaleForecast(models.Model):
     product_id = fields.Many2one(
         comodel_name="product.product", string="Product", required=True
     )
+    categ_id = fields.Many2one(related="product_id.categ_id", store=True)
     product_uom = fields.Many2one(comodel_name="uom.uom", string="Unit of measure")
     location_id = fields.Many2one(
         comodel_name="stock.location", string="Location", required=True

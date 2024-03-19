@@ -9,6 +9,7 @@
                 <field name="date_from" string="Date From" />
                 <field name="date_to" string="Date To" />
                 <field name="product_id" />
+                <field name="categ_id" />
                 <field name="location_id" />
                 <field name="product_uom_qty" />
                 <field name="product_uom" />
@@ -52,6 +53,7 @@
         <field name="arch" type="xml">
             <pivot string="Stock Demand Estimate">
                 <field name="product_qty" type="measure" />
+                <field name="categ_id" type="row" />
                 <field name="product_id" type="row" />
                 <field name="date_range_id" type="col" />
                 <field name="date_from" type="col" />
@@ -77,6 +79,7 @@
         <field name="arch" type="xml">
             <search string="Search Sale Forecast">
                 <field name="product_id" />
+                <field name="categ_id" />
                 <field name="location_id" />
                 <field name="date_range_id" />
                 <separator />
@@ -97,6 +100,12 @@
                         name="groupby_product"
                         domain="[]"
                         context="{'group_by':'product_id'}"
+                    />
+                    <filter
+                        string="Product Category"
+                        name="groupby_product_category"
+                        domain="[]"
+                        context="{'group_by':'categ_id'}"
                     />
                     <filter
                         string="Location"
