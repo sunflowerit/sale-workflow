@@ -33,6 +33,9 @@ class SaleForecast(models.Model):
         comodel_name="stock.location", string="Location", required=True
     )
     product_uom_qty = fields.Float(string="Quantity", digits="Product Unit of Measure")
+    product_target_uom_qty = fields.Float(
+        string="Target Quantity", digits="Product Unit of Measure"
+    )
     product_qty = fields.Float(
         string="Quantity (Product UoM)",
         compute="_compute_product_quantity",

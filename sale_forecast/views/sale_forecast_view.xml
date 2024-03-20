@@ -15,6 +15,7 @@
                 <field name="product_uom" />
                 <field name="product_qty" />
                 <field name="daily_qty" />
+                <field name="product_target_uom_qty" />
             </tree>
         </field>
     </record>
