@@ -1,6 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_sale_forecast,sale.forecast,model_sale_forecast,sales_team.group_sale_salesman,1,0,0,0
-access_sale_forecast_system,sale.forecast.system,model_sale_forecast,sales_team.group_sale_manager	1,1,1,1,1
-access_sale_forecast_sheet,access_sale_forecast_sheet,sale_forecast.model_sale_forecast_sheet,sales_team.group_sale_manager	1,1,1,1,1
-access_sale_forecast_sheet_line,access_sale_forecast_sheet_line,sale_forecast.model_sale_forecast_sheet_line,sales_team.group_sale_manager	1,1,1,1,1
-access_sale_forecast_wizard,access_sale_forecast_wizard,sale_forecast.model_sale_forecast_wizard,sales_team.group_sale_manager	1,1,1,1,1
+access_sale_forecast_system,sale.forecast.system,model_sale_forecast,sales_team.group_sale_manager,1,1,1,1
+access_sale_forecast_sheet,access_sale_forecast_sheet,sale_forecast.model_sale_forecast_sheet,sales_team.group_sale_manager,1,1,1,1
+access_sale_forecast_sheet_line,access_sale_forecast_sheet_line,sale_forecast.model_sale_forecast_sheet_line,sales_team.group_sale_manager,1,1,1,1
+access_sale_forecast_wizard,access_sale_forecast_wizard,sale_forecast.model_sale_forecast_wizard,sales_team.group_sale_manager,1,1,1,1
