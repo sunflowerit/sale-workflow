@@ -1,0 +1,146 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="sale_forecast_view_tree" model="ir.ui.view">
+        <field name="name">sale.forecast.tree</field>
+        <field name="model">sale.forecast</field>
+        <field name="arch" type="xml">
+            <tree edit="1" editable="bottom">
+                <field name="date_range_id" />
+                <field name="date_from" string="Date From" />
+                <field name="date_to" string="Date To" />
+                <field name="product_id" />
+                <field name="categ_id" />
+                <field name="location_id" />
+                <field name="product_uom_qty" />
+                <field name="product_uom" />
+                <field name="product_qty" />
+                <field name="daily_qty" />
+                <field name="product_target_uom_qty" />
+            </tree>
+        </field>
+    </record>
+    <record id="sale_forecast_view_form" model="ir.ui.view">
+        <field name="name">sale.forecast.form</field>
+        <field name="model">sale.forecast</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group name="dates_read" class="oe_read_only">
+                            <field name="date_from" string="Date From" />
+                            <field name="date_to" string="Date To" />
+                            <field name="duration" string="Duration" />
+                        </group>
+                        <group name="dates_edit" class="oe_edit_only">
+                            <field name="manual_date_from" string="Date From" />
+                            <field name="manual_date_to" string="Date To" />
+                            <field name="manual_duration" string="Duration" />
+                        </group>
+                        <group>
+                            <field name="product_id" />
+                            <field name="location_id" />
+                            <field name="product_uom_qty" />
+                            <field name="product_uom" />
+                            <field name="daily_qty" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="sale_forecast_view_pivot" model="ir.ui.view">
+        <field name="name">sale.forecast.pivot</field>
+        <field name="model">sale.forecast</field>
+        <field name="arch" type="xml">
+            <pivot string="Stock Demand Estimate">
+                <field name="product_qty" type="measure" />
+                <field name="categ_id" type="row" />
+                <field name="product_id" type="row" />
+                <field name="date_range_id" type="col" />
+                <field name="date_from" type="col" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="sale_forecast_view_graph" model="ir.ui.view">
+        <field name="name">sale.forecast.graph</field>
+        <field name="model">sale.forecast</field>
+        <field name="arch" type="xml">
+            <graph type="bar" stacked="True">
+                <field name="product_qty" type="measure" />
+                <field name="date_from" />
+                <field name="product_id" />
+            </graph>
+        </field>
+    </record>
+
+    <record id="sale_forecast_view_search" model="ir.ui.view">
+        <field name="name">sale.forecast.search</field>
+        <field name="model">sale.forecast</field>
+        <field name="arch" type="xml">
+            <search string="Search Sale Forecast">
+                <field name="product_id" />
+                <field name="categ_id" />
+                <field name="location_id" />
+                <field name="date_range_id" />
+                <separator />
+                <filter
+                    name="expired"
+                    string="Expired"
+                    domain="[('date_to', '&lt;', context_today().strftime('%Y-%m-%d'))]"
+                />
+                <filter
+                    name="not_expired"
+                    string="Not Expired"
+                    domain="['|', ('date_to', '=', False), ('date_to', '&gt;', context_today().strftime('%Y-%m-%d'))]"
+                />
+                <separator />
+                <group expand="0" string="Group By">
+                    <filter
+                        string="Product"
+                        name="groupby_product"
+                        domain="[]"
+                        context="{'group_by':'product_id'}"
+                    />
+                    <filter
+                        string="Product Category"
+                        name="groupby_product_category"
+                        domain="[]"
+                        context="{'group_by':'categ_id'}"
+                    />
+                    <filter
+                        string="Location"
+                        name="groupby_location"
+                        domain="[]"
+                        context="{'group_by':'location_id'}"
+                    />
+                    <filter
+                        string="Date (From)"
+                        name="groupby_date_from"
+                        domain="[]"
+                        context="{'group_by':'date_from'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="sale_forecast_action" model="ir.actions.act_window">
+        <field name="name">Sale Forecast</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.forecast</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="search_view_id" ref="sale_forecast_view_search" />
+        <field name="context">{"search_default_not_expired": 1}</field>
+    </record>
+    <menuitem
+        id="sale_forecast_planning_menu"
+        name="Forecast"
+        parent="sale.sale_menu_root"
+        sequence="10"
+    />
+    <menuitem
+        id="sale_forecast_menu"
+        parent="sale_forecast_planning_menu"
+        action="sale_forecast_action"
+    />
+</odoo>
