@@ -19,6 +19,7 @@
         "security/sale_security.xml",
         "views/sale_forecast_view.xml",
         "wizards/sale_forecast_wizard_view.xml",
+        "wizards/wizard_sale_forecast_import.xml",
     ],
     "license": "LGPL-3",
     "installable": True,

@@ -16,6 +16,7 @@
                 <field name="product_qty" />
                 <field name="daily_qty" />
                 <field name="product_target_uom_qty" />
+                <field name="write_date" string="Last Updated On" />
             </tree>
         </field>
     </record>
