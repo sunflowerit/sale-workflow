@@ -51,7 +51,7 @@ class WizardSaleForecastImport(models.TransientModel):
         if not lst or not lst[0]:
             raise UserError(_("Import file is empty or unreadable"))
         rows = lst[1]
-        header_row = rows[1]
+        header_row = rows[0]
         date_headers = header_row[4:]
         product_headers = header_row[:4]
         (product_category_index, product_index, default_code_index, key_index,) = (
@@ -111,7 +111,13 @@ class WizardSaleForecastImport(models.TransientModel):
 
     def _date_to_object(self, date):
         """No expired dates"""
-        date_object = datetime.strptime(date, "%b-%y")
+        try:
+            date_object = datetime.strptime(date, "%b-%y")
+        except:
+            try:
+                date_object = datetime.strptime(date, "%y-%b")
+            except:
+                raise
         if date_object.date() < fields.Date.today():
             return False
         return date_object
